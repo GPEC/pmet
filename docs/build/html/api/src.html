@@ -55,12 +55,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-src.main">src.main module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#src.main.import_dataset"><code class="docutils literal notranslate"><span class="pre">import_dataset()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#src.main.process_sample"><code class="docutils literal notranslate"><span class="pre">process_sample()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#src.main.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#src-main-module">src.main module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-src">Module contents</a></li>
 </ul>
 </li>
@@ -237,30 +232,8 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="src.outputs.html#module-src.outputs.scores_csv">src.outputs.scores_csv module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="src.outputs.html#src.outputs.scores_csv.ScoresCsv"><code class="docutils literal notranslate"><span class="pre">ScoresCsv</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="src.outputs.html#src.outputs.scores_csv.ScoresCsv.run"><code class="docutils literal notranslate"><span class="pre">ScoresCsv.run()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="src.outputs.html#module-src.outputs">Module contents</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="src.outputs.html#src.outputs.Output"><code class="docutils literal notranslate"><span class="pre">Output</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="src.outputs.html#src.outputs.Output.run"><code class="docutils literal notranslate"><span class="pre">Output.run()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="src.outputs.html#src.outputs.Overlay"><code class="docutils literal notranslate"><span class="pre">Overlay</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="src.outputs.html#src.outputs.Overlay.generate_accuracy_mask"><code class="docutils literal notranslate"><span class="pre">Overlay.generate_accuracy_mask()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.outputs.html#src.outputs.Overlay.overlay_image"><code class="docutils literal notranslate"><span class="pre">Overlay.overlay_image()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.outputs.html#src.outputs.Overlay.run"><code class="docutils literal notranslate"><span class="pre">Overlay.run()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="src.outputs.html#src.outputs.ScoresCsv"><code class="docutils literal notranslate"><span class="pre">ScoresCsv</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="src.outputs.html#src.outputs.ScoresCsv.run"><code class="docutils literal notranslate"><span class="pre">ScoresCsv.run()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="src.outputs.html#src-outputs-scores-csv-module">src.outputs.scores_csv module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.outputs.html#module-contents">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="src.parsers.html">src.parsers package</a><ul>
@@ -356,88 +329,8 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
-<section id="module-src.main">
-<span id="src-main-module"></span><h2>src.main module<a class="headerlink" href="#module-src.main" title="Link to this heading"></a></h2>
-<p>Main entry point for the cell scoring pipeline.</p>
-<p>Discovers mask files under a given directory, pairs them with their
-associated point annotation files, runs each sample through a
-configurable processing pipeline, and writes results to an output
-directory.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="src.main.import_dataset">
-<span class="sig-prename descclassname"><span class="pre">src.main.</span></span><span class="sig-name descname"><span class="pre">import_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_area_padding</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/main.html#import_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.main.import_dataset" title="Link to this definition"></a></dt>
-<dd><p>Build Sample objects for a single mask file.</p>
-<p>Parses the image and model names from the mask filename, loads cell
-detections and the mask array from that file, then searches <code class="docutils literal notranslate"><span class="pre">root</span></code>
-recursively for every GeoJSON point annotation file that belongs to
-the same image. One Sample is created per matching GeoJSON file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mask_file</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – Path to the mask <code class="docutils literal notranslate"><span class="pre">.tif</span></code> file to import.</p></li>
-<li><p><strong>root</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – Directory to search for associated GeoJSON annotation files.</p></li>
-<li><p><strong>sample_area_padding</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Amount to shrink the sample border by.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<a class="reference internal" href="src.datatypes.html#src.datatypes.sample.Sample" title="src.datatypes.sample.Sample"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code></a>]</span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of Sample objects, one per matched annotation file.</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">mask_file</span></code> does not match the expected naming
-convention.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="src.main.process_sample">
-<span class="sig-prename descclassname"><span class="pre">src.main.</span></span><span class="sig-name descname"><span class="pre">process_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_area_padding</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/main.html#process_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.main.process_sample" title="Link to this definition"></a></dt>
-<dd><p>Import, process, and write results for a single mask file.</p>
-<p>Imports all Samples associated with <code class="docutils literal notranslate"><span class="pre">mask_file</span></code>, runs each through
-every step in <code class="docutils literal notranslate"><span class="pre">PROCESSING_PIPELINE</span></code>, then passes the result to
-every step in <code class="docutils literal notranslate"><span class="pre">OUTPUT_PIPELINE</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mask_file</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – Path to the mask <code class="docutils literal notranslate"><span class="pre">.tif</span></code> file to process.</p></li>
-<li><p><strong>root</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – Directory to search for associated annotation files.</p></li>
-<li><p><strong>output_directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – Directory where output files will be written.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="src.main.run">
-<span class="sig-prename descclassname"><span class="pre">src.main.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_area_padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/main.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.main.run" title="Link to this definition"></a></dt>
-<dd><p>Discover mask files and run the full processing pipeline.</p>
-<p>Searches <code class="docutils literal notranslate"><span class="pre">root_dir</span></code> recursively for <code class="docutils literal notranslate"><span class="pre">.tif</span></code> mask files and
-processes each one in parallel. Results are written to <code class="docutils literal notranslate"><span class="pre">output_dir</span></code>
-if provided, otherwise to a <code class="docutils literal notranslate"><span class="pre">Results/</span></code> directory placed alongside
-<code class="docutils literal notranslate"><span class="pre">root_dir</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>root_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Root directory to search for <code class="docutils literal notranslate"><span class="pre">.tif</span></code> mask files.</p></li>
-<li><p><strong>output_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span>) – Directory for output files. Defaults to a
-<code class="docutils literal notranslate"><span class="pre">Results/</span></code> folder next to <code class="docutils literal notranslate"><span class="pre">root_dir</span></code>.</p></li>
-<li><p><strong>max_workers</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Maximum number of parallel worker processes.</p></li>
-<li><p><strong>sample_area_padding</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Amount to shrink the sample border by.</p></li>
-<li><p><strong>no_progress</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Disable the progress bar.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="src-main-module">
+<h2>src.main module<a class="headerlink" href="#src-main-module" title="Link to this heading"></a></h2>
 </section>
 <section id="module-src">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src" title="Link to this heading"></a></h2>

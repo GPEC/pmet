@@ -59,7 +59,6 @@ class ScoresCsv(Output):
         # print(f"Recall: {data.results.recall}")
         # print(f"F1: {data.results.f1}")
 
-
         flock = FileLock(f"{output_file}.lock")
         with flock:
             file_exists: bool = Path(output_file).exists()

@@ -45,10 +45,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">PMET</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pmet module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#pmet.pmet"><code class="docutils literal notranslate"><span class="pre">pmet()</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pmet module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.html">src package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="test.html">test module</a></li>
 </ul>
@@ -80,52 +77,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-pmet">
-<span id="pmet-module"></span><h1>pmet module<a class="headerlink" href="#module-pmet" title="Link to this heading"></a></h1>
-<p>pmet.py</p>
-<p>Comand-line interface for the PMET program.</p>
-<p>This module parses command-line arguments, preforms basic input
-validation, and delegates the actual processing work to
-:func:’src.main.run’.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Usage<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>pmet.py<span class="w"> </span>-i<span class="w"> </span>/path/to/input<span class="w"> </span>-o<span class="w"> </span>/path/to/output<span class="w"> </span>-w<span class="w"> </span><span class="m">4</span>
-</pre></div>
-</div>
-<dl class="py function">
-<dt class="sig sig-object py" id="pmet.pmet">
-<span class="sig-prename descclassname"><span class="pre">pmet.</span></span><span class="sig-name descname"><span class="pre">pmet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pmet.html#pmet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pmet.pmet" title="Link to this definition"></a></dt>
-<dd><p>Run the command-line interface for the PMET program.</p>
-<p>Parses command-line arguments, validates the provided input
-directory exists, builds the argument dictionary, and invokes
-:func:’src.main.run’.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>--input</strong> (<em>-i</em><em>,</em>) – Path to the input directory containing
-the data/models to evaluate. <strong>Required.</strong></p></li>
-<li><p><strong>--output</strong> (<em>-o</em><em>,</em>) – Path to the output directory where results
-will be written. Optional; if not specified the default behavior
-of :func:’src.main.run’ is used.</p></li>
-<li><p><strong>--workers</strong> (<em>-w</em><em>,</em>) – Maximum number of parallel processes to use.
-Optional; if not specified the default behavior of :func:’src.main.run’
-is used.</p></li>
-<li><p><strong>--padding</strong> (<em>-p</em><em>,</em>) – Number of pixels to shrink the sample border by.</p></li>
-<li><p><strong>--bar</strong> (<em>-b</em><em>,</em>) – Enable or disable the status bar.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>SystemExit</strong> – If no input directory is provided, or if the provided directory
-does not exist on disk. In both cases the program will exit.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
+  <section id="pmet-module">
+<h1>pmet module<a class="headerlink" href="#pmet-module" title="Link to this heading"></a></h1>
 </section>
 
 

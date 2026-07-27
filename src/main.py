@@ -121,11 +121,12 @@ def import_dataset(
 
     return jobs
 
+
 def process_sample(
-        mask_file: tuple[Path, str],
-        annotation_file: tuple[Path, str],
-        output_directory: Path,
-        sample_area_padding: int,
+    mask_file: tuple[Path, str],
+    annotation_file: tuple[Path, str],
+    output_directory: Path,
+    sample_area_padding: int,
 ) -> None:
     # Load data into memory
 
@@ -141,21 +142,21 @@ def process_sample(
     )
 
     mask: npt.NDArray[np.uint16] = np.array(
-        Image.open(str(mask_file_path.absolute())),
-        dtype="uint16"
+        Image.open(str(mask_file_path.absolute())), dtype="uint16"
     )
 
-    sample_area: dt.SampleArea = parsers.sampleArea.Geojson(
-        sample_area_padding
-    ).parse(str(annotation_file_path.absolute()))
+    sample_area: dt.SampleArea = parsers.sampleArea.Geojson(sample_area_padding).parse(
+        str(annotation_file_path.absolute())
+    )
 
     image_name: str = annotation_file[1]
     model_name: str = mask_file[1]
-    metadata: dt.Metadata = dt.Metadata(image_name,
-                                        model_name,
-                                        str(annotation_file_path.absolute()),
-                                        str(mask_file_path.absolute())
-                                        )
+    metadata: dt.Metadata = dt.Metadata(
+        image_name,
+        model_name,
+        str(annotation_file_path.absolute()),
+        str(mask_file_path.absolute()),
+    )
 
     data: dt.Sample = dt.Sample(metadata, cells, points, mask, sample_area)
 
@@ -189,7 +190,9 @@ def run(
     :param no_progress: Disable the progress bar.
     """
     root_path = Path(root_dir)
-    output_directory: Path = Path(output_dir) if output_dir else root_path.parent / "Results"
+    output_directory: Path = (
+        Path(output_dir) if output_dir else root_path.parent / "Results"
+    )
 
     if not max_workers:
         print("No maximum parallel processor count set. Using number of cpu cores...\n")
@@ -200,29 +203,34 @@ def run(
 
     # Discover files
     print("Searching for files...")
-    file_associations: dict[tuple[Path, str], list[tuple[Path, str]]] = file_matcher.associate_files(root_path)
+    file_associations: dict[tuple[Path, str], list[tuple[Path, str]]] = (
+        file_matcher.associate_files(root_path)
+    )
 
     # Create processor pool
     with ProcessPoolExecutor(max_workers) as executor:
-            futures = []
+        futures = []
 
-            for annotation_file in file_associations:
-                mask_files: list[tuple[Path, str]] = file_associations[annotation_file]
+        for annotation_file in file_associations:
+            mask_files: list[tuple[Path, str]] = file_associations[annotation_file]
 
-                for mask_file in mask_files:
-                    future = executor.submit(process_sample,
-                                             mask_file,
-                                             annotation_file,
-                                             output_directory,
-                                             sample_area_padding,
-                                             )
-                    futures.append(future)
+            for mask_file in mask_files:
+                future = executor.submit(
+                    process_sample,
+                    mask_file,
+                    annotation_file,
+                    output_directory,
+                    sample_area_padding,
+                )
+                futures.append(future)
 
-            if no_progress:
-                print("Status bar disabled. The program is still running in the background...")
+        if no_progress:
+            print(
+                "Status bar disabled. The program is still running in the background..."
+            )
+            for _ in as_completed(futures):
+                pass
+        else:
+            with alive_bar(len(futures)) as bar:
                 for _ in as_completed(futures):
-                    pass
-            else:
-                with alive_bar(len(futures)) as bar:
-                    for _ in as_completed(futures):
-                        bar()
+                    bar()

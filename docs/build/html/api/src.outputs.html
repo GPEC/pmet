@@ -55,7 +55,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="src.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="src.html#module-src.main">src.main module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src-main-module">src.main module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
 </ul>
 </li>
@@ -213,181 +213,11 @@ effect to a file within <code class="docutils literal notranslate"><span class="
 </dd></dl>
 
 </section>
-<section id="module-src.outputs.scores_csv">
-<span id="src-outputs-scores-csv-module"></span><h2>src.outputs.scores_csv module<a class="headerlink" href="#module-src.outputs.scores_csv" title="Link to this heading"></a></h2>
-<p>scores_csv.py</p>
-<p>Defines the <a class="reference internal" href="#src.outputs.scores_csv.ScoresCsv" title="src.outputs.scores_csv.ScoresCsv"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScoresCsv</span></code></a> output generator, which writes the
-processed results of a sample out to a CSV file.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="src.outputs.scores_csv.ScoresCsv">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">src.outputs.scores_csv.</span></span><span class="sig-name descname"><span class="pre">ScoresCsv</span></span><a class="reference internal" href="../_modules/src/outputs/scores_csv.html#ScoresCsv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.outputs.scores_csv.ScoresCsv" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#src.outputs.output.Output" title="src.outputs.output.Output"><code class="xref py py-class docutils literal notranslate"><span class="pre">Output</span></code></a></p>
-<p>Generate a CSV report of a sample’s results.</p>
-<p>Writes the computed <a class="reference internal" href="src.datatypes.html#src.datatypes.Results" title="src.datatypes.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a> for a sample
-out to a CSV file.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="src.outputs.scores_csv.ScoresCsv.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/outputs/scores_csv.html#ScoresCsv.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.outputs.scores_csv.ScoresCsv.run" title="Link to this definition"></a></dt>
-<dd><p>Write the results of one sample to a CSV file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="src.datatypes.html#src.datatypes.sample.Sample" title="src.datatypes.sample.Sample"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code></a></span>) – The sample whose results should be written to
-the CSV file.</p></li>
-<li><p><strong>output_directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – The directory to write the
-generated CSV file to.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. The CSV file is written as a side effect to
-a file within <code class="docutils literal notranslate"><span class="pre">output_directory</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<section id="src-outputs-scores-csv-module">
+<h2>src.outputs.scores_csv module<a class="headerlink" href="#src-outputs-scores-csv-module" title="Link to this heading"></a></h2>
 </section>
-<section id="module-src.outputs">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.outputs" title="Link to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="src.outputs.Output">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">src.outputs.</span></span><span class="sig-name descname"><span class="pre">Output</span></span><a class="reference internal" href="../_modules/src/outputs/output.html#Output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.outputs.Output" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Abstract base class for output generators.</p>
-<p>Subclasses of <a class="reference internal" href="#src.outputs.Output" title="src.outputs.Output"><code class="xref py py-class docutils literal notranslate"><span class="pre">Output</span></code></a> are responsible for
-generating the resulting output artifact from processed data.
-Each concrete subclass must implement <a class="reference internal" href="#src.outputs.Output.run" title="src.outputs.Output.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a>.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="src.outputs.Output.run">
-<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/outputs/output.html#Output.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.outputs.Output.run" title="Link to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="src.outputs.Overlay">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">src.outputs.</span></span><span class="sig-name descname"><span class="pre">Overlay</span></span><a class="reference internal" href="../_modules/src/outputs/overlay.html#Overlay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.outputs.Overlay" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#src.outputs.output.Output" title="src.outputs.output.Output"><code class="xref py py-class docutils literal notranslate"><span class="pre">Output</span></code></a></p>
-<p>Generate a colour-coded overlay image for a sample.</p>
-<p>Produces an image based on the original segmentation mask, where
-each cell is color coded according to its classification
-accuracy.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="src.outputs.Overlay.generate_accuracy_mask">
-<span class="sig-name descname"><span class="pre">generate_accuracy_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/outputs/overlay.html#Overlay.generate_accuracy_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.outputs.Overlay.generate_accuracy_mask" title="Link to this definition"></a></dt>
-<dd><p>Create an accuracy-coded image from the segmentation mask.</p>
-<p>Builds an image based on the original segmentation mask,
-colour coded per cell according to its classification
-accuracy.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cells</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="src.datatypes.html#src.datatypes.cell.Cell" title="src.datatypes.cell.Cell"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cell</span></code></a>]</span>) – The list of cells to colour code in the image.</p></li>
-<li><p><strong>mask</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericAlias</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">uint16</span></code>]</span>) – The original segmentation mask.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The original segmentation mask.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericAlias</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">uint8</span></code>]</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.outputs.Overlay.overlay_image">
-<span class="sig-name descname"><span class="pre">overlay_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">background</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/outputs/overlay.html#Overlay.overlay_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.outputs.Overlay.overlay_image" title="Link to this definition"></a></dt>
-<dd><p>Overlay one image on top of another with optional transparency.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>background</strong> (<em>npt.NDArray</em><em>[</em><em>np.uint16</em><em>]</em>) – The background image.</p></li>
-<li><p><strong>overlay</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericAlias</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">uint16</span></code>]</span>) – The image to overlay on top of the background image.</p></li>
-<li><p><strong>alpha</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>) – The transparency value of the overlay image, in the
-range <code class="docutils literal notranslate"><span class="pre">0</span></code> (fully transparent) to <code class="docutils literal notranslate"><span class="pre">1</span></code> (fully opaque).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The background image with the overlay image blended on
-top of it.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericAlias</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">uint16</span></code>]</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.outputs.Overlay.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/outputs/overlay.html#Overlay.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.outputs.Overlay.run" title="Link to this definition"></a></dt>
-<dd><p>Generate and write the accuracy overlay image for a sample.</p>
-<p>Builds the accuracy-coded image via <a class="reference internal" href="#src.outputs.Overlay.generate_accuracy_mask" title="src.outputs.Overlay.generate_accuracy_mask"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generate_accuracy_mask()</span></code></a>,
-optionally blends it over the sample’s original image via
-<a class="reference internal" href="#src.outputs.Overlay.overlay_image" title="src.outputs.Overlay.overlay_image"><code class="xref py py-func docutils literal notranslate"><span class="pre">overlay_image()</span></code></a>, and writes the result to
-<code class="docutils literal notranslate"><span class="pre">output_directory</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="src.datatypes.html#src.datatypes.sample.Sample" title="src.datatypes.sample.Sample"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code></a></span>) – The processed sample data to generate the
-overlay image from.</p></li>
-<li><p><strong>output_directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – The directory to write the
-generated overlay image to.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. The generated image will be written as a side
-effect to a file within <code class="docutils literal notranslate"><span class="pre">output_directory</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="src.outputs.ScoresCsv">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">src.outputs.</span></span><span class="sig-name descname"><span class="pre">ScoresCsv</span></span><a class="reference internal" href="../_modules/src/outputs/scores_csv.html#ScoresCsv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.outputs.ScoresCsv" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#src.outputs.output.Output" title="src.outputs.output.Output"><code class="xref py py-class docutils literal notranslate"><span class="pre">Output</span></code></a></p>
-<p>Generate a CSV report of a sample’s results.</p>
-<p>Writes the computed <a class="reference internal" href="src.datatypes.html#src.datatypes.Results" title="src.datatypes.Results"><code class="xref py py-class docutils literal notranslate"><span class="pre">Results</span></code></a> for a sample
-out to a CSV file.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="src.outputs.ScoresCsv.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/src/outputs/scores_csv.html#ScoresCsv.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.outputs.ScoresCsv.run" title="Link to this definition"></a></dt>
-<dd><p>Write the results of one sample to a CSV file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="src.datatypes.html#src.datatypes.sample.Sample" title="src.datatypes.sample.Sample"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sample</span></code></a></span>) – The sample whose results should be written to
-the CSV file.</p></li>
-<li><p><strong>output_directory</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span>) – The directory to write the
-generated CSV file to.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. The CSV file is written as a side effect to
-a file within <code class="docutils literal notranslate"><span class="pre">output_directory</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
 </section>
 </section>
 
