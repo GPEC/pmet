@@ -171,7 +171,7 @@ def run(
     root_dir: str,
     output_dir: str | None = None,
     max_workers: int | None = None,
-    sample_area_padding: int = 2,
+    sample_area_padding: int = 5,
     no_progress: bool = False,
 ) -> None:
     """

@@ -57,8 +57,8 @@ def pmet() -> None:
         is used.
     :type -w, --workers: int
 
-    :param -p, --padding: Number of pixels to shrink the sample border by.
-    :type -p, --padding: int
+    :param -p, --border-padding: Number of pixels to shrink the sample border by.
+    :type -p, --border-padding: int
 
     :param -b, --bar: Enable or disable the status bar.
     :type -b, --bar: bool
@@ -75,7 +75,7 @@ def pmet() -> None:
     )
     _ = parser.add_argument(
         "-p",
-        "--padding",
+        "--border-padding",
         type=int,
         help="Number of pixels to shrink the sample border by",
     )
@@ -106,8 +106,8 @@ def pmet() -> None:
         kwargs["output_dir"] = args.output
     if args.workers:
         kwargs["max_workers"] = args.workers
-    if args.padding:
-        kwargs["sample_area_padding"] = args.padding
+    if args.border_padding:
+        kwargs["sample_area_padding"] = args.border_padding
     if args.no_progress:
         kwargs["no_progress"] = args.no_progress
 

@@ -198,11 +198,11 @@ apptainer run pmet.sif -i [/path/to/input] -o [/path/to/output]
 
 ## Options
 
-| Option                | Description                                     |
-|-----------------------|-------------------------------------------------|
-| `-h`, `--help`        | Show the help message and exit                  |
-| `-i`, `--input`       | **(Required)** Input directory                  |
-| `-o`, `--output`      | Output directory                                |
-| `-w`, `--workers`     | Maximum number of parallel processors           |
-| `-p`, `--padding`     | Number of pixels to shrink the sample border by |
-| `-n`, `--no-progress` | Disable the progress bar                        |
+| Option                   | Description                                     |
+|--------------------------|-------------------------------------------------|
+| `-h`, `--help`           | Show the help message and exit                  |
+| `-i`, `--input`          | **(Required)** Input directory                  |
+| `-o`, `--output`         | Output directory                                |
+| `-w`, `--workers`        | Maximum number of parallel processors           |
+| `-p`, `--border-padding` | Number of pixels to shrink the sample border by |
+| `-n`, `--no-progress`    | Disable the progress bar                        |
