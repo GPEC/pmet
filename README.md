@@ -166,7 +166,8 @@ apptainer run pmet.sif --help
 ### Prerequisites
 - Python 3.14+
 - pip
-  
+
+### Steps:
 
 1. Clone the repository.
 ```bash
