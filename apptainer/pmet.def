@@ -4,7 +4,7 @@ From: python:3.14.3
 %labels
     Author Dylan Woods
     Application PMET
-    Version 0.3.2
+    Version 0.4.0
 
 %files
     ../src /opt/pmet/src
