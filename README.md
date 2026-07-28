@@ -166,13 +166,24 @@ apptainer run pmet.sif --help
 ### Prerequisites
 - Python 3.14+
 - pip
+  
 
+1. Clone the repository.
 ```bash
 git clone https://github.com/GPEC/pmet.git
 cd pmet
+```
+2. Create a virtual environment.
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
+```
+3. Install the dependancies.
+```bash
 pip install -r requirements.txt
+```
+4. Run
+```bash
 python pmet.py --help
 ```
 
