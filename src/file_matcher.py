@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 
 ANNOTATION_FILE_REGEX: re.Pattern[str] = re.compile(
-    rf"^(?P<image_name>.*?)\.ome\.tif( - Image(?P<image_index>\d+)?)?.geojson$"
+    rf"^(?P<image_name>.*?)\.ome\.tif( - Image(?P<image_index>\d+)?)?(.*?)\.geojson$"
 )
 
 
@@ -27,7 +27,7 @@ def find_associated_mask_files(root: Path, image_name: str) -> list[tuple[Path, 
     :return: A list of filepaths to all matched mask images.
     """
     MASK_FILE_REGEX: re.Pattern[str] = re.compile(
-        rf"^(?P<image_name>{image_name})\.ome\.tif - (Image(?P<image_index>\d+)?)? ?(?P<model_name>.*?)_label\.tif$"
+        rf"^(?P<image_name>{image_name})\.ome\.tif - (Image(?P<image_index>\d+)?)? ?(?P<model_name>.*?)_label(.*?)\.tif$"
     )
 
     associated_mask_files: list[tuple[Path, str]] = []
@@ -36,6 +36,7 @@ def find_associated_mask_files(root: Path, image_name: str) -> list[tuple[Path, 
         re_match: re.Match[str] | None = MASK_FILE_REGEX.match(mask_file.name)
 
         if not mask_file.is_file() or not re_match:
+            print(f"Mask file {mask_file.name} not matched!")
             continue
 
         model_name: str = re_match.groupdict()["model_name"]
@@ -67,6 +68,7 @@ def associate_files(root: Path) -> dict[tuple[Path, str], list[tuple[Path, str]]
 
         # Continue if invalid file
         if not annotation_file.is_file() or not re_match:
+            print(f"File {annotation_file} not matched!")
             continue
 
         match_fields = re_match.groupdict()

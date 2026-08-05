@@ -128,6 +128,9 @@ def process_sample(
     output_directory: Path,
     sample_area_padding: int,
 ) -> None:
+
+    print(f"Beging processing on {mask_file[0].name}")
+
     # Load data into memory
 
     mask_file_path: Path = mask_file[0]
@@ -136,18 +139,22 @@ def process_sample(
     cells: dict[int, dt.Cell] = parsers.cells.Tif().parse(
         str(mask_file_path.absolute())
     )
+    print(f"Loaded cells for {mask_file[0].name}")
 
     points: list[dt.Point] = parsers.points.Geojson().parse(
         str(annotation_file_path.absolute())
     )
+    print(f"Loaded points for {mask_file[0].name}")
 
     mask: npt.NDArray[np.uint16] = np.array(
         Image.open(str(mask_file_path.absolute())), dtype="uint16"
     )
+    print(f"Loaded mask for {mask_file[0].name}")
 
     sample_area: dt.SampleArea = parsers.sampleArea.Geojson(sample_area_padding).parse(
         str(annotation_file_path.absolute())
     )
+    print(f"Loaded sample area for {mask_file[0].name}")
 
     image_name: str = annotation_file[1]
     model_name: str = mask_file[1]

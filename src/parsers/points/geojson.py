@@ -42,14 +42,29 @@ class Geojson(Parser[list[dt.Point]]):
         with open(filepath, "r") as f:
             json_data = json.load(f)
 
-        for feature in json_data:
-            if feature["geometry"]["type"] == "MultiPoint":
-                for point_entry in feature["geometry"]["coordinates"]:
+        if json_data["type"] == "FeatureCollection":
+            json_data = json_data["features"]
+            for feature in json_data:
+                if feature["geometry"]["type"] == "Point":
+                    point_entry = feature["geometry"]["coordinates"]
                     point_x: int = int(point_entry[0])
                     point_y: int = int(point_entry[1])
 
                     point: dt.Point = dt.Point(point_x, point_y)
 
                     points.append(point)
+
+        else:
+            print(f"VALUES (kill me) {json_data.values()}")
+            for feature in json_data:
+                if feature["geometry"]["type"] == "MultiPoint" or feature["geometry"]["type"] == "Point":
+                    print("Got a point match!")
+                    for point_entry in feature["geometry"]["coordinates"]:
+                        point_x: int = int(point_entry[0])
+                        point_y: int = int(point_entry[1])
+
+                        point: dt.Point = dt.Point(point_x, point_y)
+
+                        points.append(point)
 
         return points

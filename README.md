@@ -179,7 +179,7 @@ cd pmet
 python3 -m venv .venv
 source .venv/bin/activate
 ```
-3. Install the dependancies.
+3. Install the dependencies.
 ```bash
 pip install -r requirements.txt
 ```
@@ -190,10 +190,16 @@ python pmet.py --help
 
 # Usage
 
-Run with the Apptainer container or directly with Python.
+Run with the Apptainer container:
 
 ```bash
 apptainer run pmet.sif -i [/path/to/input] -o [/path/to/output]
+```
+
+Run locally:
+
+```bash
+python pmet.py -i [/path/to/input] -o [/path/to/output]
 ```
 
 ## Options

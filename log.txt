@@ -1,0 +1,25 @@
+
+  ____  __  __   _____ _____
+ |  _ \|  \/  | | ____|_   _|
+ | |_) | |\/| | |  _|   | |
+ |  __/| |  | |_| |___ _| |
+ |_| (_)_|  |_(_)_____(_)_|
+Point-based Model Evaluation Tool
+
+Please put on your 3d glasses now.
+
+Workers: 8
+Sample area padding: 5
+
+Searching for files...
+Beging processing on CellDIVE_SLIDE-1479_A-2.ome.tif - Image0_BDNF-647-Abcam_manual_label 1.tif
+Loaded cells for CellDIVE_SLIDE-1479_A-2.ome.tif - Image0_BDNF-647-Abcam_manual_label 1.tif
+Loaded points for CellDIVE_SLIDE-1479_A-2.ome.tif - Image0_BDNF-647-Abcam_manual_label 1.tif
+Loaded mask for CellDIVE_SLIDE-1479_A-2.ome.tif - Image0_BDNF-647-Abcam_manual_label 1.tif
+Beging processing on CellDIVE_SLIDE-1479_A-2.ome.tif - Image0_BDNF-647-Abcam_auto_label 1.tif
+Loaded cells for CellDIVE_SLIDE-1479_A-2.ome.tif - Image0_BDNF-647-Abcam_auto_label 1.tif
+Loaded points for CellDIVE_SLIDE-1479_A-2.ome.tif - Image0_BDNF-647-Abcam_auto_label 1.tif
+Loaded mask for CellDIVE_SLIDE-1479_A-2.ome.tif - Image0_BDNF-647-Abcam_auto_label 1.tif
+Status bar disabled. The program is still running in the background...
+Processing complete!
+Thank you for using PMET, You can now take off your 3d glasses.
