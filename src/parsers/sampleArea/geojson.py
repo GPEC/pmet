@@ -25,7 +25,7 @@ class Geojson(Parser[dt.SampleArea]):
     def __init__(self, sample_area_padding: int):
         self.sample_area_padding: int = sample_area_padding
 
-    def parse_sample_area(self, json_data: list[Any]) -> dt.SampleArea:
+    def parse_sample_area(self, json_data: [Any]) -> dt.SampleArea:
         """
         Extract the sample area data from parsed GeoJSON data.
 
@@ -42,7 +42,7 @@ class Geojson(Parser[dt.SampleArea]):
 
         sample_area: dt.SampleArea | None = None
 
-        for annotation in json_data:
+        for annotation in json_data["features"]:
             try:
                 if (
                     annotation["properties"]["classification"]["name"]
