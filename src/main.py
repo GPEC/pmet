@@ -39,89 +39,6 @@ OUTPUT_PIPELINE: tuple[Output, ...] = (
     outputs.Overlay(),
 )
 
-
-def import_dataset(
-    mask_file: Path, root: Path, sample_area_padding: int
-) -> list[dt.Sample]:
-    """
-    Build Sample objects for a single mask file.
-
-    Parses the image and model names from the mask filename, loads cell
-    detections and the mask array from that file, then searches ``root``
-    recursively for every GeoJSON point annotation file that belongs to
-    the same image. One Sample is created per matching GeoJSON file.
-
-    :param mask_file: Path to the mask ``.tif`` file to import.
-    :param root: Directory to search for associated GeoJSON annotation files.
-    :param sample_area_padding: Amount to shrink the sample border by.
-    :return: A list of Sample objects, one per matched annotation file.
-    :raises ValueError: If ``mask_file`` does not match the expected naming
-        convention.
-    """
-    jobs: list[dt.Sample] = []
-
-    # Extract the image name and model name from the mask filename.
-    mask_file_regex = re.compile(
-        r"(?P<image>.+?)\.ome\.tif\s*-\s*Image\d*\s*_?(?P<model>.+?)_label\.tif"
-    )
-    match = mask_file_regex.search(mask_file.name)
-
-    if not match:
-        raise ValueError(
-            f"Mask filename does not match expected format: {mask_file.name}"
-        )
-
-    image_name = match.group("image")
-    model_name = match.group("model")
-
-    # Load cell detection objects and the raw mask array from the mask file.
-    cell_objects: dict[int, dt.Cell] = parsers.cells.Tif().parse(
-        str(mask_file.absolute())
-    )
-    mask_array: npt.NDArray[np.uint16] = np.array(
-        Image.open(str(mask_file.absolute())), dtype="uint16"
-    )
-
-    # Find all GeoJSON annotation files in ``root`` for this image.
-    points_file_regex = re.compile(
-        rf"^{re.escape(image_name)}\.ome\.tif - Image\d*\.geojson$"
-    )
-    points_files = [
-        p
-        for p in root.rglob("*.geojson")
-        if p.is_file() and points_file_regex.match(p.name)
-    ]
-
-    for points_file in points_files:
-        filepath: str = str(points_file.absolute())
-
-        try:
-            sample_area: dt.SampleArea = parsers.sampleArea.Geojson(
-                sample_area_padding
-            ).parse(filepath)
-        except ValueError as e:
-            print(f"Error: {e} for file {filepath}")
-            continue
-
-        points: list[dt.Point] = parsers.points.Geojson().parse(filepath)
-
-        metadata: dt.Metadata = dt.Metadata(
-            image_name, model_name, points_file.name, mask_file.name
-        )
-
-        jobs.append(
-            dt.Sample(
-                metadata=metadata,
-                cells=cell_objects,
-                points=points,
-                mask=mask_array,
-                sample_area=sample_area,
-            )
-        )
-
-    return jobs
-
-
 def process_sample(
     mask_file: tuple[Path, str],
     annotation_file: tuple[Path, str],
@@ -129,32 +46,38 @@ def process_sample(
     sample_area_padding: int,
 ) -> None:
 
-    print(f"Beging processing on {mask_file[0].name}")
-
     # Load data into memory
-
     mask_file_path: Path = mask_file[0]
     annotation_file_path: Path = annotation_file[0]
 
     cells: dict[int, dt.Cell] = parsers.cells.Tif().parse(
         str(mask_file_path.absolute())
     )
-    print(f"Loaded cells for {mask_file[0].name}")
 
-    points: list[dt.Point] = parsers.points.Geojson().parse(
-        str(annotation_file_path.absolute())
-    )
-    print(f"Loaded points for {mask_file[0].name}")
+    annotation_file_extension: str = annotation_file_path.name.split(".")[-1].lower()
+    if annotation_file_extension == "geojson":
+        annotation_file_parser = parsers.points.Geojson()
+    elif annotation_file_extension == "tsv":
+        annotation_file_parser = parsers.points.Tsv()
+    elif annotation_file_extension == "csv":
+        annotation_file_parser = parsers.points.Csv()
+    else:
+        annotation_file_parser = None
+
+    if annotation_file_parser:
+        points: list[dt.Point] = annotation_file_parser.parse(
+            str(annotation_file_path.absolute())
+        )
+    else:
+        raise ValueError(f"Unsupported filetype: {annotation_file_extension}")
 
     mask: npt.NDArray[np.uint16] = np.array(
         Image.open(str(mask_file_path.absolute())), dtype="uint16"
     )
-    print(f"Loaded mask for {mask_file[0].name}")
 
     sample_area: dt.SampleArea = parsers.sampleArea.Geojson(sample_area_padding).parse(
         str(annotation_file_path.absolute())
     )
-    print(f"Loaded sample area for {mask_file[0].name}")
 
     image_name: str = annotation_file[1]
     model_name: str = mask_file[1]
@@ -210,9 +133,14 @@ def run(
 
     # Discover files
     print("Searching for files...")
-    file_associations: dict[tuple[Path, str], list[tuple[Path, str]]] = (
+    file_associations: dict[tuple[Path, str, str], list[tuple[Path, str]]] = (
         file_matcher.associate_files(root_path)
     )
+
+    for annotations_file in file_associations.keys():
+        print(annotations_file[0])
+        for mask_file in file_associations[annotations_file]:
+            print(f"\t-> {mask_file[0]}")
 
     # Create processor pool
     with ProcessPoolExecutor(max_workers) as executor:

@@ -24,40 +24,20 @@ class Geojson(Parser[list[dt.Point]]):
     objects and builds a :class:`~.datatypes.Point` object for each point.
     """
 
-    @override
-    def parse(self, filepath: str) -> list[dt.Point]:
+    def extract_points(self, geometries: shapely.GeometryCollection) -> list[dt.Point]:
         """
-        Generate point objects from a QuPath GeoJSON file.
+        Extract point objects from geometry collection.
 
-        Reads the GeoJSON file at ``filepath`` and builds a
-        :class:`~.datatypes.Point` object for each annotation it contains.
+        Finds all points within the ``geometries`` object and
+        converts each one to a :class:`~.datatypes.Point` object.
 
-        :param filepath: The path to the GeoJSON file to parse.
-        :type filepath: str
+        :param geometries: The geometry collection to extract points from.
+        :type geometries: GeometryCollection
 
-        :returns: A list of point objects parsed from the file.
+        :returns: A list of point objects extracted from the geometry collection.
         :rtype: list[~.datatypes.Point]
         """
-
         points: list[dt.Point] = []
-
-        # Read in raw data from file
-        raw_json: Any
-        with open(filepath, "r") as f:
-            raw_json = json.load(f)
-
-        if isinstance(raw_json, dict):
-            raw_data = str(raw_json)
-        elif isinstance(raw_json, list):
-            raw_data = json.dumps({
-                "type": "FeatureCollection",
-                "features": raw_json,
-            })
-        else:
-            raise TypeError(f"Invalid geojson format: {filepath}")
-
-        ## Convert raw data to usable objects
-        geometries: shapely.GeometryCollection = shapely.GeometryCollection(shapely.from_geojson(raw_data))
 
         for geometry in geometries.geoms:
             if isinstance(geometry, shapely.MultiPoint):
@@ -78,4 +58,40 @@ class Geojson(Parser[list[dt.Point]]):
                 point_obj: dt.Point = dt.Point(point_x, point_y)
                 points.append(point_obj)
 
+        return points
+
+    @override
+    def parse(self, filepath: str) -> list[dt.Point]:
+        """
+        Generate point objects from a QuPath GeoJSON file.
+
+        Reads the GeoJSON file at ``filepath`` and builds a
+        :class:`~.datatypes.Point` object for each annotation it contains.
+
+        :param filepath: The path to the GeoJSON file to parse.
+        :type filepath: str
+
+        :returns: A list of point objects parsed from the file.
+        :rtype: list[~.datatypes.Point]
+        """
+
+        # Read in raw data from file
+        raw_json: Any
+        with open(filepath, "r") as f:
+            raw_json = json.load(f)
+
+        if isinstance(raw_json, dict):
+            raw_data = str(raw_json)
+        elif isinstance(raw_json, list):
+            raw_data = json.dumps({
+                "type": "FeatureCollection",
+                "features": raw_json,
+            })
+        else:
+            raise TypeError(f"Invalid geojson format in file: {filepath}")
+
+        # Convert raw data to usable objects
+        geometries: shapely.GeometryCollection = shapely.GeometryCollection(shapely.from_geojson(raw_data))
+
+        points: list[dt.Point] = self.extract_points(geometries)
         return points

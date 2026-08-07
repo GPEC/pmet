@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 
 ANNOTATION_FILE_REGEX: re.Pattern[str] = re.compile(
-    rf"^(?P<image_name>.*?)\.ome\.tif( - Image(?P<image_index>\d+)?)?(.*?)\.geojson$"
+    rf"^(?P<image_name>.*?)\.ome\.tif( - Image(?P<image_index>\d+)?)?(.*?)\.(?P<file_extension>geojson|tsv|csv)$"
 )
 
 
@@ -27,7 +27,7 @@ def find_associated_mask_files(root: Path, image_name: str) -> list[tuple[Path, 
     :return: A list of filepaths to all matched mask images.
     """
     MASK_FILE_REGEX: re.Pattern[str] = re.compile(
-        rf"^(?P<image_name>{image_name})\.ome\.tif - (Image(?P<image_index>\d+)?)? ?(?P<model_name>.*?)_label(.*?)\.tif$"
+        rf"^(?P<image_name>{image_name})\.ome\.tif - (Image(?P<image_index>\d+)?)? ?(?P<model_name>.*?)_label(.*?)\.(?P<file_extension>.+)$"
     )
 
     associated_mask_files: list[tuple[Path, str]] = []
@@ -36,7 +36,6 @@ def find_associated_mask_files(root: Path, image_name: str) -> list[tuple[Path, 
         re_match: re.Match[str] | None = MASK_FILE_REGEX.match(mask_file.name)
 
         if not mask_file.is_file() or not re_match:
-            print(f"Mask file {mask_file.name} not matched!")
             continue
 
         model_name: str = re_match.groupdict()["model_name"]
@@ -46,7 +45,7 @@ def find_associated_mask_files(root: Path, image_name: str) -> list[tuple[Path, 
     return associated_mask_files
 
 
-def associate_files(root: Path) -> dict[tuple[Path, str], list[tuple[Path, str]]]:
+def associate_files(root: Path) -> dict[tuple[Path, str, str], list[tuple[Path, str]]]:
     """
     Creates a pairing between mask and annotation files.
 
@@ -58,27 +57,27 @@ def associate_files(root: Path) -> dict[tuple[Path, str], list[tuple[Path, str]]
     :param root: Path of the directory to start the recursive search in.
     :return: A dictionary of all detected file pairings.
     """
-    association_table: dict[tuple[Path, str], list[tuple[Path, str]]] = {}
+    association_table: dict[tuple[Path, str, str], list[tuple[Path, str]]] = {}
 
     # Iterate through all potential annotation files
-    for annotation_file in root.rglob("*.geojson"):
+    for annotation_file in root.rglob("*"):
         re_match: re.Match[str] | None = ANNOTATION_FILE_REGEX.match(
             annotation_file.name
         )
 
         # Continue if invalid file
         if not annotation_file.is_file() or not re_match:
-            print(f"File {annotation_file} not matched!")
             continue
 
         match_fields = re_match.groupdict()
 
         image_name: str = match_fields["image_name"]
+        file_extension: str = match_fields["file_extension"]
 
         mask_files: list[tuple[Path, str]] = find_associated_mask_files(
             root, image_name
         )
 
-        association_table[(annotation_file, image_name)] = mask_files
+        association_table[(annotation_file, image_name, file_extension)] = mask_files
 
     return association_table

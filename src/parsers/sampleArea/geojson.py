@@ -7,7 +7,12 @@ file and parses it into a :class:`~.datatypes.SampleArea`.
 """
 
 import json
+
+import shapely
+
 from typing import override, Any
+
+from shapely.errors import ShapelyDeprecationWarning
 
 import src.datatypes as dt
 from src.parsers.parser import Parser
@@ -25,13 +30,13 @@ class Geojson(Parser[dt.SampleArea]):
     def __init__(self, sample_area_padding: int):
         self.sample_area_padding: int = sample_area_padding
 
-    def parse_sample_area(self, json_data: [Any]) -> dt.SampleArea:
+    def extract_sample_area(self, geometries: shapely.GeometryCollection) -> dt.SampleArea:
         """
-        Extract the sample area data from parsed GeoJSON data.
+        Extract the sample area data from a GeometryCollection.
 
-        :param json_data: The raw GeoJSON data to extract
-            the sample area from.
-        :type json_data: list[Any]
+        :param geometries: The GeometryCollection to
+            extract the sample area from.
+        :type geometries: shapely.GeometryCollection
 
         :param sample_area_padding: Amount to shrink the sample border by.
         :type sample_area_padding: int
@@ -42,29 +47,8 @@ class Geojson(Parser[dt.SampleArea]):
 
         sample_area: dt.SampleArea | None = None
 
-        for annotation in json_data["features"]:
-            try:
-                if (
-                    annotation["properties"]["classification"]["name"]
-                    == "cell_segmentation_sample_area"
-                ):
-                    area_points = annotation["geometry"]["coordinates"][0]
-
-                    padding: int = self.sample_area_padding
-
-                    tl = area_points[0]
-                    br = area_points[2]
-                    tr = area_points[3]
-
-                    sample_area = dt.SampleArea(
-                        int(tr[0] - padding),
-                        int(tl[0] + padding),
-                        int(br[1] - padding),
-                        int(tr[1] + padding),
-                    )
-
-            except KeyError:
-                continue
+        for geometry in geometries.geoms:
+            print(dir(geometry))
 
         if sample_area is None:
             raise ValueError("Failed to parse sample area.")
@@ -77,7 +61,7 @@ class Geojson(Parser[dt.SampleArea]):
         Read and parse the sample area from a GeoJSON file.
 
         Reads the file at ``filepath`` and delegates it to
-        :meth:`parse_sample_area` to extract the sample area bounds.
+        :meth:`extract_sample_area` to extract the sample area bounds.
 
         :param filepath: The path to the GeoJSON file.
         :type filepath: str
@@ -86,8 +70,22 @@ class Geojson(Parser[dt.SampleArea]):
         :rtype: ~.datatypes.SampleArea
         """
 
-        json_data: list[Any] = []
+        raw_json: Any
         with open(filepath, "r") as f:
-            json_data = json.load(f)
+            raw_json = json.load(f)
 
-        return self.parse_sample_area(json_data)
+        if isinstance(raw_json, dict):
+            raw_data = str(raw_json)
+        elif isinstance(raw_json, list):
+            raw_data = json.dumps({
+                "type": "FeatureCollection",
+                "features": raw_json,
+            })
+        else:
+            raise TypeError(f"Invalid geojson format in file: {filepath}")
+
+        # Convert raw data to usable objects
+        geometries: shapely.GeometryCollection = shapely.GeometryCollection(shapely.from_geojson(raw_data))
+
+        sample_area: dt.SampleArea = self.extract_sample_area(geometries)
+        return sample_area
