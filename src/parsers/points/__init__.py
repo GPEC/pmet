@@ -3,7 +3,6 @@
 from .csv import Csv
 from .tsv import Tsv
 from .geojson import Geojson
-from .geojson2 import Geojson2
 
 __all__ = [
     "Csv",

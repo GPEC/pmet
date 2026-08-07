@@ -7,6 +7,9 @@ parses it into a list of :class:`~.datatypes.Point` objects.
 """
 
 import json
+
+import shapely
+
 from typing import override, Any
 
 import src.datatypes as dt
@@ -38,36 +41,41 @@ class Geojson(Parser[list[dt.Point]]):
 
         points: list[dt.Point] = []
 
-        json_data: list[Any] = []
+        # Read in raw data from file
+        raw_json: Any
         with open(filepath, "r") as f:
-            json_data = json.load(f)
+            raw_json = json.load(f)
 
-        if json_data["type"] == "FeatureCollection":
-            json_data = json_data["features"]
+        if isinstance(raw_json, dict):
+            raw_data = str(raw_json)
+        elif isinstance(raw_json, list):
+            raw_data = json.dumps({
+                "type": "FeatureCollection",
+                "features": raw_json,
+            })
+        else:
+            raise TypeError(f"Invalid geojson format: {filepath}")
 
-            for feature in json_data:
-                if feature["geometry"]["type"] == "MultiPoint" or feature["geometry"]["type"] == "Point":
-                    print("Got a point match!")
-                    for point_entry in feature["geometry"]["coordinates"]:
-                        point_x: int = int(point_entry[0])
-                        point_y: int = int(point_entry[1])
+        ## Convert raw data to usable objects
+        geometries: shapely.GeometryCollection = shapely.GeometryCollection(shapely.from_geojson(raw_data))
 
-                        point: dt.Point = dt.Point(point_x, point_y)
+        for geometry in geometries.geoms:
+            if isinstance(geometry, shapely.MultiPoint):
+                point_geometries: shapely.MultiPoint = geometry
+                for point in point_geometries.geoms:
+                    point_x = int(point.x)
+                    point_y = int(point.y)
 
-                        points.append(point)
+                    point_obj: dt.Point = dt.Point(point_x, point_y)
+                    points.append(point_obj)
 
+            elif isinstance(geometry, shapely.Point):
+                point: shapely.Point = geometry
 
+                point_x = int(point.x)
+                point_y = int(point.y)
 
-        print(f"VALUES (kill me) {json_data.values()}")
-        for feature in json_data:
-            if feature["geometry"]["type"] == "MultiPoint" or feature["geometry"]["type"] == "Point":
-                print("Got a point match!")
-                for point_entry in feature["geometry"]["coordinates"]:
-                    point_x: int = int(point_entry[0])
-                    point_y: int = int(point_entry[1])
-
-                    point: dt.Point = dt.Point(point_x, point_y)
-
-                    points.append(point)
+                point_obj: dt.Point = dt.Point(point_x, point_y)
+                points.append(point_obj)
 
         return points
